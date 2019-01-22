@@ -34,6 +34,7 @@ public class Project {
 
     @NotBlank(message = "Project identifier is required")
     @Size(min = 4, max = 5, message = "Please use 4 to 5 characters")
+    // this is a database layer constraints and it will only invoke when trying to save/persist the object in the DB.
     @Column(updatable = false, unique = true)
     // it should be unique and shouldn't be able to edit/update once it gets created.
     private String projectIdentifier;
