@@ -10,6 +10,8 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 
 /**
  * @author badrikant.soni on 22/01/19
+ * @ControllerAdvice is an annotation that allows you to write global code that can be applied to controllers.
+ * In our use-case, we are using this for exception handling. @ControllerAdvice applies to all classes that use the @Controller annotation (which as you know extends to classes using @RestController)
  */
 
 // Spring advices all the controllers in the system that at point of time if an exception arises
@@ -22,6 +24,7 @@ public class CustomResponseEntityExceptionHandler extends ResponseEntityExceptio
 
     @ExceptionHandler
     public final ResponseEntity<Object> handleProjectIdException(ProjectIdException ex, WebRequest request){
+        //WebRequest is a Generic interface. The main purpose of WebRequest is to be used by web requests interceptors i.e. a class annotated with @ControllerAdvice.
         ProjectIdExceptionResponse exceptionResponse = new ProjectIdExceptionResponse(ex.getMessage());
         return new ResponseEntity<>(exceptionResponse,HttpStatus.BAD_REQUEST);
     }
