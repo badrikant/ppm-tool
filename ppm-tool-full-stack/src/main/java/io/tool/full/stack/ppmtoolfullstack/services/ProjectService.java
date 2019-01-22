@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 
 /**
  * @author badrikant.soni on 22/01/19
- * Why do we need service layer ?
+ * Q.Why do we need service layer ?
  * You always want to have your logic abstracted from the controller as much as you can obviously.
  * And then you only pretty much just want the controller to be a router rather than a place that holds
  * your logic. So this is why I want to always use a service layer that talks to the repository rather than having
