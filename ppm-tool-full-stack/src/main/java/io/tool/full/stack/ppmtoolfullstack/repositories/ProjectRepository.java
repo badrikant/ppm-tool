@@ -12,9 +12,10 @@ import org.springframework.stereotype.Repository;
  * It is a specialization of the @Component annotation allowing for implementation classes to be autodetected through classpath scanning
  */
 @Repository
-public interface ProjectRepository extends CrudRepository<Project,Long> {
-    @Override
-    Iterable<Project> findAllById(Iterable<Long> iterable);
+public interface ProjectRepository extends CrudRepository<Project, Long> {
 
     Project findByProjectIdentifier(String projectId);
+
+    @Override
+    Iterable<Project> findAll();
 }
