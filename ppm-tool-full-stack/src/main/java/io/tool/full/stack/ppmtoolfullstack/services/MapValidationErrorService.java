@@ -17,7 +17,7 @@ public class MapValidationErrorService {
 
     public ResponseEntity<?> MapValidationErrorService(BindingResult result) {
         // BindingResult - BindingResult is an interface that basically invokes the validator on an object.This is basically analyzes the object
-        // and it determines whether or not there are errors and if there has errors we can return invalid objects error message in response
+        // and it determines whether or not there are errors and if there has errors we can return validation(In Project Entity) errors in the response
         if (result.hasErrors()) {
             Map<String, String> errorMap = result.getFieldErrors().stream()
                     .collect(Collectors.toMap(FieldError::getField, FieldError::getDefaultMessage));  // getting map from the list
