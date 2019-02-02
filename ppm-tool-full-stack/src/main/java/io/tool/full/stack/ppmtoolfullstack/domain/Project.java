@@ -5,11 +5,14 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToOne;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 import javax.validation.constraints.NotBlank;
@@ -53,6 +56,14 @@ public class Project {
 
     @JsonFormat(pattern = "yyyy-mm-dd") // need to have better date format instead "2019-01-22T04:30:17.134+0000"
     private Date updated_At;
+
+    // use case : A project can have only one backlog
+    // CascadeType.ALL - on creating/updating/deleting the project, backlog object will also be creating/updating/deleting.
+    // FetchType.EAGER - fetch Backlog table without any explicit request by app.
+    // mappedBY - value must be match with project object in Backlog class.
+    @OneToOne(fetch = FetchType.EAGER,cascade = CascadeType.ALL,mappedBy = "project")
+    private Backlog backlog;
+
 
     @PrePersist
     protected void OnCreate() {
