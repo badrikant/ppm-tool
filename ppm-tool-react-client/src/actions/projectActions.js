@@ -5,6 +5,13 @@ export const createProject = (project, history) => async dispatch => {
   try {
     const res = await axios.post("http://localhost:8090/api/project", project);
     history.push("/dashboard");
+
+    // Problem : Encountered a problem where validation error showed up on other projects when updating any existing project.
+    // soluton - everytime when it creates new project and if its good data, don't propoget the error
+    dispatch({
+      type: GET_ERRORS,
+      payload: {}
+    });
   } catch (err) {
     dispatch({
       type: GET_ERRORS,
