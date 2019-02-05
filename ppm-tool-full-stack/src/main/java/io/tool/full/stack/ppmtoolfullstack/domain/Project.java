@@ -1,6 +1,7 @@
 package io.tool.full.stack.ppmtoolfullstack.domain;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -61,7 +62,9 @@ public class Project {
     // CascadeType.ALL - on creating/updating/deleting the project, backlog object will also be creating/updating/deleting.
     // FetchType.EAGER - fetch Backlog table without any explicit request by app.
     // mappedBY - value must be match with project object in Backlog class.
-    @OneToOne(fetch = FetchType.EAGER,cascade = CascadeType.ALL,mappedBy = "project")
+    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "project")
+    @JsonIgnore
+    // during the fetch of project, backlog will increase the size of payload so decided to have separate call to fetch project backlog. Hence we simply ignore the backlog object in fetch time.
     private Backlog backlog;
 
 

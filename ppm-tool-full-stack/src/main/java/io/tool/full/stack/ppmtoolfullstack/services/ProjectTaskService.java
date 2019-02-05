@@ -9,6 +9,8 @@ import io.tool.full.stack.ppmtoolfullstack.repositories.ProjectTaskRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 /**
  * @author badrikant.soni on 05/02/19
  */
@@ -54,5 +56,9 @@ public class ProjectTaskService {
         }
         ProjectTask projectTask1 = projectTaskRepository.save(projectTask);
         return projectTask1;
+    }
+
+    public Iterable<ProjectTask>findBacklogById(String id){
+        return projectTaskRepository.findByProjectIdentifierOrderByPriority(id);
     }
 }
