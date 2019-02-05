@@ -36,6 +36,10 @@ public class ProjectTaskService {
         //we want our project sequence to be like this: IDPRO-1  IDPRO-2  ...100 101
         Integer backlogPTSequence = backlog.getPTSequence();
         backlogPTSequence++;
+
+        // set updated PTSequence to Backlog
+        backlog.setPTSequence(backlogPTSequence);
+
         projectTask.setProjectSequence(projectIdentifier + "-" + backlogPTSequence);
         projectTask.setProjectIdentifier(projectIdentifier);
 

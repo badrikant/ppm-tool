@@ -15,6 +15,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.PrePersist;
+import javax.persistence.PreUpdate;
 import javax.validation.constraints.NotBlank;
 import java.util.Date;
 
@@ -53,5 +55,15 @@ public class ProjectTask {
     @Column(updatable = false)
     private String projectIdentifier;
     private Date create_At;
-    private Date udpate_At;
+    private Date update_At;
+
+    @PrePersist
+    protected void OnCreate() {
+        this.create_At = new Date();
+    }
+
+    @PreUpdate
+    protected void onUpdate() {
+        this.update_At = new Date();
+    }
 }
