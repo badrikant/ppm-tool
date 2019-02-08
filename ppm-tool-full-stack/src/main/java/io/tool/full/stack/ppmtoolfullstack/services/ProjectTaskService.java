@@ -74,4 +74,8 @@ public class ProjectTaskService {
         }
         return projectTasks;
     }
+
+    public ProjectTask findPTByProjectSequence(String projectSeqId){
+        return projectTaskRepository.findByProjectSequence(projectSeqId);
+    }
 }
