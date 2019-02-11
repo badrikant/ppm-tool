@@ -95,4 +95,16 @@ public class ProjectTaskService {
         }
         return projectTask;
     }
+
+    public ProjectTask updateProjectTask(ProjectTask projectTask, String backlog_id, String pt_id) {
+
+        // find the existing ProjectTask
+        ProjectTask existingProjectTask = findPTByProjectSequence(backlog_id, pt_id);
+        if (!existingProjectTask.getProjectSequence().equals(projectTask.getProjectSequence())
+                || !existingProjectTask.getProjectIdentifier().equals(projectTask.getProjectIdentifier())) {
+            throw new ProjectNotFoundException("Project Task '" + projectTask.getProjectSequence()
+                    + "' does not belong to project: '" + projectTask.getProjectIdentifier());
+        }
+        return projectTaskRepository.save(projectTask);
+    }
 }
