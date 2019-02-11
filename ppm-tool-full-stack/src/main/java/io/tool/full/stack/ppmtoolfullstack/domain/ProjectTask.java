@@ -45,8 +45,7 @@ public class ProjectTask {
 
     //ManyToOne with Backlog
     // Use Case: There can be multiple projectTasks and those will belong to one and only one backlog.
-    // CascadeType.REFRESH - it tells that on deleting the projectTasks, backlog will be refreshed automatically and says deleted projectTask is no longer exists.
-    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.REFRESH)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "backlog_id", updatable = false, nullable = false)
     // "backlog_id" will not be updatable and nullable
     @JsonIgnore // in case of infinite recursion issue

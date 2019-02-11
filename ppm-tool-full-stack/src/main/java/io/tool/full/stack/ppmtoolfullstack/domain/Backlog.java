@@ -41,9 +41,10 @@ public class Backlog {
 
     // Use Case : A backlog can have many projectTasks but not vice versa
     // FetchType.EAGER - fetch the ProjectTask table without explicit request by app.
-    // CascadeType.ALL - on creating/upating/deleting the backlog, project tasks will also be created/deleted/updated.
+    // CascadeType.REFRESH - it tells that on deleting the projectTasks, backlog will be refreshed automatically and says deleted projectTask is no longer exists.
     // OneToMany with projecttasks
-    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "backlog")
+    // For orphan removal: If you invoke setProjectTasks(null), the related tasks entities will be removed in db automatically.
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.REFRESH, mappedBy = "backlog",orphanRemoval = true)
     private List<ProjectTask> projectTasks = new ArrayList<>();
 
 }
