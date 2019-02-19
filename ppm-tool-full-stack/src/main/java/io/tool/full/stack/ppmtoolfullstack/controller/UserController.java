@@ -1,4 +1,4 @@
-package io.tool.full.stack.ppmtoolfullstack.web;
+package io.tool.full.stack.ppmtoolfullstack.controller;
 
 import io.tool.full.stack.ppmtoolfullstack.domain.User;
 import io.tool.full.stack.ppmtoolfullstack.dto.JWTLoginSuccessResponse;
