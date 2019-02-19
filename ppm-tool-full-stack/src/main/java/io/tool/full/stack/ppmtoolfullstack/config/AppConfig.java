@@ -22,6 +22,7 @@ public class AppConfig {
         loggingFilter.setIncludeClientInfo(true);
         loggingFilter.setIncludeQueryString(true);
         loggingFilter.setIncludePayload(true);
+        loggingFilter.setIncludeHeaders(true);
         return loggingFilter;
     }
 }

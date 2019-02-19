@@ -67,10 +67,10 @@
         <appender-ref ref="ERROR_LOG"/>
     </logger>
 
-<!--    <logger name="org.springframework.web.filter.CommonsRequestLoggingFilter">
+    <logger name="org.springframework.web.filter.CommonsRequestLoggingFilter">
         <level value="DEBUG" additivity="false"/>
         <appender-ref ref="REQUEST_LOG"/>
-    </logger>-->
+    </logger>
 
     <logger name="io.tool.full.stack.ppmtoolfullstack." level="INFO">
         <appender-ref ref="STDOUT"/>
