@@ -2,9 +2,11 @@ package io.tool.full.stack.ppmtoolfullstack.services;
 
 import io.tool.full.stack.ppmtoolfullstack.domain.Backlog;
 import io.tool.full.stack.ppmtoolfullstack.domain.Project;
+import io.tool.full.stack.ppmtoolfullstack.domain.User;
 import io.tool.full.stack.ppmtoolfullstack.exceptions.ProjectIdException;
 import io.tool.full.stack.ppmtoolfullstack.repositories.BacklogRepository;
 import io.tool.full.stack.ppmtoolfullstack.repositories.ProjectRepository;
+import io.tool.full.stack.ppmtoolfullstack.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -25,18 +27,26 @@ public class ProjectService {
     @Autowired
     private BacklogRepository backlogRepository;
 
-    public Project saveOrUpdate(Project project) {
+    @Autowired
+    private UserRepository userRepository;
+
+    public Project saveOrUpdate(Project project, String username) {
         try {
+
+            User user = userRepository.findByUsername(username);
+            project.setUser(user);
+            project.setProjectLeader(user.getUsername());
+
             project.setProjectIdentifier(project.getProjectIdentifier().toUpperCase());
 
             // set the relationship between Project and Backlog Entity
-            if(project.getId()==null){
+            if (project.getId() == null) {
                 // whenever project object is created, lets create a new Backlog object
                 Backlog backlog = new Backlog();
                 project.setBacklog(backlog);
                 backlog.setProject(project);
                 backlog.setProjectIdentifier(project.getProjectIdentifier().toUpperCase());
-            }else {
+            } else {
                 // in update case, find existing backlog and set it to project
                 project.setBacklog(backlogRepository.findByProjectIdentifier(project.getProjectIdentifier().toUpperCase()));
             }

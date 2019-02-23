@@ -7,18 +7,23 @@ import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 import javax.persistence.Transient;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 
 /**
  * @author badrikant.soni on 16/02/19
@@ -47,6 +52,11 @@ public class User implements UserDetails {
     private Date update_At;
 
     //OneToMany with Project
+    // usecase : A user can belong to multiple projects.
+    // CascadeType.REFRESH - it tells that on deleting the projects, User will be refreshed automatically and says deleted project is no longer exists.
+    // fetch = FetchType.EAGER - Fetch project tables without any explicit request by application.
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.REFRESH, mappedBy = "user", orphanRemoval = true)
+    List<Project> projects = new ArrayList<>();
 
     @PrePersist
     protected void onCreate() {

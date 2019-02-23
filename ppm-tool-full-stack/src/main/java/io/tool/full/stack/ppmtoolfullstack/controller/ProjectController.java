@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
+import java.security.Principal;
 
 /**
  * @author badrikant.soni on 22/01/19
@@ -33,13 +34,13 @@ public class ProjectController {
     private MapValidationErrorService mapValidationErrorService;
 
     @PostMapping("")
-    public ResponseEntity<?> createNewProject(@Valid @RequestBody Project project, BindingResult result) {
+    public ResponseEntity<?> createNewProject(@Valid @RequestBody Project project, BindingResult result, Principal principal) {
         // @Valid annotation - Will allow the valid request body to pass on and gives 400 instead of 500 with better error response.
 
         ResponseEntity<?> errorMap = mapValidationErrorService.MapValidationErrorService(result);
         if (errorMap != null) return errorMap;
 
-        Project newProject = projectService.saveOrUpdate(project);
+        Project newProject = projectService.saveOrUpdate(project,principal.getName());
         return new ResponseEntity<Project>(newProject, HttpStatus.CREATED);
     }
 

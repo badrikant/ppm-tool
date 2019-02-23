@@ -13,6 +13,7 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
@@ -67,6 +68,12 @@ public class Project {
     // during the fetch of project, backlog will increase the size of payload so decided to have separate call to fetch project backlog. Hence we simply ignore the backlog object in fetch time.
     private Backlog backlog;
 
+    // Usecase : projects may have only one user.
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JsonIgnore
+    private User user;
+
+    private String projectLeader;
 
     @PrePersist
     protected void OnCreate() {
