@@ -4,6 +4,7 @@ import io.tool.full.stack.ppmtoolfullstack.domain.Backlog;
 import io.tool.full.stack.ppmtoolfullstack.domain.Project;
 import io.tool.full.stack.ppmtoolfullstack.domain.User;
 import io.tool.full.stack.ppmtoolfullstack.exceptions.ProjectIdException;
+import io.tool.full.stack.ppmtoolfullstack.exceptions.ProjectNotFoundException;
 import io.tool.full.stack.ppmtoolfullstack.repositories.BacklogRepository;
 import io.tool.full.stack.ppmtoolfullstack.repositories.ProjectRepository;
 import io.tool.full.stack.ppmtoolfullstack.repositories.UserRepository;
@@ -56,23 +57,25 @@ public class ProjectService {
         }
     }
 
-    public Project findProjectByIdentifier(String projectId) {
+    public Project findProjectByIdentifier(String projectId, String username) {
         Project projectIdentifier = projectRepository.findByProjectIdentifier(projectId.toUpperCase());
         if (projectIdentifier == null) {
             throw new ProjectIdException("Project ID '" + projectId + "' does't exist");
         }
+        // throw an error if project id does't belong to correct owner
+        if (!projectIdentifier.getProjectLeader().equals(username)) {
+            throw new ProjectNotFoundException("Project Not Found in your account");
+        }
         return projectIdentifier;
     }
 
-    public Iterable<Project> findAllProjects() {
-        return projectRepository.findAll();
+    public Iterable<Project> findAllProjects(String username) {
+        return projectRepository.findAllByProjectLeader(username);
     }
 
-    public void deleteProjectByProjectIdentifier(String projectId) {
-        Project project = projectRepository.findByProjectIdentifier(projectId.toUpperCase());
-        if (project == null) {
-            throw new ProjectIdException("Can't delete Project with ID '" + projectId + "'. Project does't exist");
-        }
-        projectRepository.delete(project);
+    public void deleteProjectByProjectIdentifier(String projectId, String username) {
+
+        // allow to delete projects with correct owners.
+        projectRepository.delete(findProjectByIdentifier(projectId, username));
     }
 }
