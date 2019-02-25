@@ -32,12 +32,21 @@ public class ProjectService {
     private UserRepository userRepository;
 
     public Project saveOrUpdate(Project project, String username) {
-        try {
 
+        // only correct project owner should be able to update the project.
+        if (project.getId() != null) {
+            Project existingProject = projectRepository.findByProjectIdentifier(project.getProjectIdentifier());
+            if (existingProject != null && (!existingProject.getProjectLeader().equals(username))) {
+                throw new ProjectNotFoundException("project not found in your project");
+            } else if (existingProject == null) {
+                throw new ProjectNotFoundException("Project with ID: '" + project.getProjectIdentifier() + "' cannot be updated because it doesn't exist");
+            }
+        }
+
+        try {
             User user = userRepository.findByUsername(username);
             project.setUser(user);
             project.setProjectLeader(user.getUsername());
-
             project.setProjectIdentifier(project.getProjectIdentifier().toUpperCase());
 
             // set the relationship between Project and Backlog Entity
@@ -47,7 +56,8 @@ public class ProjectService {
                 project.setBacklog(backlog);
                 backlog.setProject(project);
                 backlog.setProjectIdentifier(project.getProjectIdentifier().toUpperCase());
-            } else {
+            }
+            if (project.getId() != null) {
                 // in update case, find existing backlog and set it to project
                 project.setBacklog(backlogRepository.findByProjectIdentifier(project.getProjectIdentifier().toUpperCase()));
             }
