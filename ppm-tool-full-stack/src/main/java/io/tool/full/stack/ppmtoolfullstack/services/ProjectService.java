@@ -8,6 +8,7 @@ import io.tool.full.stack.ppmtoolfullstack.exceptions.ProjectNotFoundException;
 import io.tool.full.stack.ppmtoolfullstack.repositories.BacklogRepository;
 import io.tool.full.stack.ppmtoolfullstack.repositories.ProjectRepository;
 import io.tool.full.stack.ppmtoolfullstack.repositories.UserRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,6 +21,7 @@ import org.springframework.stereotype.Service;
  * a bunch of logic on the controller layer.
  */
 @Service
+@Slf4j
 public class ProjectService {
 
     @Autowired
@@ -70,10 +72,12 @@ public class ProjectService {
     public Project findProjectByIdentifier(String projectId, String username) {
         Project projectIdentifier = projectRepository.findByProjectIdentifier(projectId.toUpperCase());
         if (projectIdentifier == null) {
+            log.error("Project ID '" + projectId + "' does't exist: {}", projectId);
             throw new ProjectIdException("Project ID '" + projectId + "' does't exist");
         }
         // throw an error if project id does't belong to correct owner
         if (!projectIdentifier.getProjectLeader().equals(username)) {
+            log.error("Project {} Not Found in your account", projectId);
             throw new ProjectNotFoundException("Project Not Found in your account");
         }
         return projectIdentifier;

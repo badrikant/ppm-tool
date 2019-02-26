@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
+import java.security.Principal;
 
 /**
  * @author badrikant.soni on 05/02/19
@@ -36,17 +37,17 @@ public class BacklogController {
     private ProjectTaskService projectTaskService;
 
     @PostMapping("/{backlog_id}")
-    public ResponseEntity<?> addProjectTaskToBacklog(@Valid @RequestBody ProjectTask projectTask, BindingResult result, @PathVariable String backlog_id) {
+    public ResponseEntity<?> addProjectTaskToBacklog(@Valid @RequestBody ProjectTask projectTask, BindingResult result, @PathVariable String backlog_id, Principal principal) {
 
         ResponseEntity<?> errorMap = mapValidationErrorService.MapValidationErrorService(result);
         if (errorMap != null) return errorMap;
-        ProjectTask task = projectTaskService.addProjectTask(backlog_id, projectTask);
+        ProjectTask task = projectTaskService.addProjectTask(backlog_id, projectTask, principal.getName());
         return new ResponseEntity<>(task, HttpStatus.CREATED);
     }
 
     @GetMapping("/{backlog_id}")
-    public Iterable<ProjectTask> getProjectBacklog(@PathVariable String backlog_id) {
-        return projectTaskService.findBacklogById(backlog_id);
+    public Iterable<ProjectTask> getProjectBacklog(@PathVariable String backlog_id, Principal principal) {
+        return projectTaskService.findBacklogById(backlog_id, principal.getName());
     }
 
     @GetMapping("/{backlog_id}/{pt_id}")
