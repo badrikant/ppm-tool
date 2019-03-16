@@ -38,7 +38,7 @@ public class JwtTokenProvider {
         Map<String, Object> claims = new HashMap<>();
         claims.put("id", userid);
         claims.put("username", user.getUsername());
-        claims.put("password", user.getPassword());
+        claims.put("fullName", user.getFullName());
 
         return Jwts.builder()
                 .setSubject(userid)
